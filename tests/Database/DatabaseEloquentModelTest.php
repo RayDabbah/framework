@@ -78,6 +78,18 @@ class DatabaseEloquentModelTest extends TestCase
         $this->assertEquals([0 => 'value'], $model->getAttributes());
     }
 
+    public function testSetAttributeWithClosure()
+    {
+        $model = new EloquentDateModelStub;
+        $model->setAttribute('testVal', 'value');
+
+        $model->setAttribute('closureVal', function ($model){
+            return substr($model->testVal, 0, 3);
+        });
+
+        $this->assertEquals('val', $model->getAttribute('closureVal'));
+    }
+
     public function testDirtyAttributes()
     {
         $model = new EloquentModelStub(['foo' => '1', 'bar' => 2, 'baz' => 3]);
